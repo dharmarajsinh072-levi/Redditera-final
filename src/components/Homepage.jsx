@@ -995,91 +995,69 @@ const Homepage = () => {
             </div>
           </div>
 
-          {/* Service 2: Sustainable Reputation */}
-          <div className="relative py-24 lg:py-32 overflow-hidden isolate">
-            {/* subtle background glow/vignette (matches screenshot) */}
-            <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-              {/* keep green glow on the gauge side only (prevents text wash) */}
-              <div className="absolute left-0 top-0 bottom-0 w-[62%] md:w-[52%] bg-[radial-gradient(circle_at_55%_44%,rgba(34,197,94,0.18)_0%,rgba(34,197,94,0.08)_20%,rgba(0,0,0,0)_58%)] opacity-90" />
-              {/* subtle neutral lift on the text side */}
-              <div className="absolute right-0 top-0 bottom-0 w-[62%] md:w-[56%] bg-[radial-gradient(circle_at_42%_40%,rgba(255,255,255,0.07)_0%,rgba(255,255,255,0.03)_18%,rgba(0,0,0,0)_56%)] opacity-70" />
-              <div className="absolute inset-0 [background:radial-gradient(closest-side,rgba(0,0,0,0),rgba(0,0,0,0.88))] opacity-70" />
-            </div>
-
-            <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 md:gap-20 lg:gap-24 px-2 md:px-8">
-              {/* Left: trust score gauge (floating, no card box) */}
-              <div className="flex-1 w-full flex items-center justify-center">
-                {/* clip glow so it never bleeds over the text */}
-                <div className="relative w-full max-w-[520px] overflow-hidden">
-                  <div
-                    className="absolute -inset-16 -translate-y-10 blur-3xl opacity-60 pointer-events-none"
-                    style={{
-                      background:
-                        'radial-gradient(circle at 50% 45%, rgba(34,197,94,0.24) 0%, rgba(34,197,94,0.10) 24%, rgba(0,0,0,0) 62%)',
-                    }}
-                    aria-hidden="true"
-                  />
-                  <div className="relative mx-auto w-full max-w-[380px] aspect-[16/9] z-10">
-                    <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 140" aria-hidden="true">
-                      <defs>
-                        <filter id="gGlow" x="-50%" y="-50%" width="200%" height="200%">
-                          <feGaussianBlur stdDeviation="4" result="blur" />
-                          <feMerge>
-                            <feMergeNode in="blur" />
-                            <feMergeNode in="SourceGraphic" />
-                          </feMerge>
-                        </filter>
-                      </defs>
-
-                      {/* background arc */}
-                      <path
-                        d="M30 110 A 90 90 0 0 1 210 110"
-                        fill="none"
-                        stroke="rgba(255,255,255,0.12)"
-                        strokeWidth="18"
-                        strokeLinecap="round"
-                      />
-                      {/* progress arc (~88%) */}
-                      <path
-                        d="M30 110 A 90 90 0 0 1 210 110"
-                        fill="none"
-                        stroke="#22C55E"
-                        strokeWidth="18"
-                        strokeLinecap="round"
-                        filter="url(#gGlow)"
-                        pathLength="100"
-                        strokeDasharray="88 100"
-                      />
-                    </svg>
-
-                    <div className="relative flex flex-col items-center justify-center pt-10">
-                      <div className="font-mono text-[11px] tracking-[0.26em] uppercase text-white/45 mb-2">
-                        Trust Score
-                      </div>
-                      <div className="flex items-end gap-2">
-                        <span className="text-6xl font-bold tracking-tight text-white leading-none">88</span>
-                        <span className="text-xl text-white/45 leading-none pb-2">/100</span>
-                      </div>
-                      <div className="mt-3 text-sm italic text-white/35">~ Community Authority Score</div>
+          {/* Service 2: Sustainable Reputation – exact match to screenshot */}
+          <div className="relative py-24 lg:py-32 overflow-hidden isolate bg-[#1A1A1A]">
+            <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 md:gap-20 lg:gap-28 px-4 md:px-8">
+              {/* Left: Trust Score gauge – centered in column, neon green arc */}
+              <div className="flex-1 w-full max-w-[min(100%,400px)] md:max-w-[min(48%,400px)] flex items-center justify-center overflow-hidden shrink-0">
+                <div className="relative w-full max-w-[320px] mx-auto">
+                  <svg className="w-full aspect-[16/9]" viewBox="0 0 240 140" aria-hidden="true">
+                    <defs>
+                      <filter id="gGlow" x="-15%" y="-15%" width="130%" height="130%">
+                        <feGaussianBlur stdDeviation="1.5" result="blur" />
+                        <feMerge>
+                          <feMergeNode in="blur" />
+                          <feMergeNode in="SourceGraphic" />
+                        </feMerge>
+                      </filter>
+                    </defs>
+                    {/* inactive arc – darker grey */}
+                    <path
+                      d="M30 110 A 90 90 0 0 1 210 110"
+                      fill="none"
+                      stroke="rgba(255,255,255,0.08)"
+                      strokeWidth="20"
+                      strokeLinecap="round"
+                    />
+                    {/* active arc – neon green with slight glow */}
+                    <path
+                      d="M30 110 A 90 90 0 0 1 210 110"
+                      fill="none"
+                      stroke="#2EFF7F"
+                      strokeWidth="20"
+                      strokeLinecap="round"
+                      filter="url(#gGlow)"
+                      pathLength="100"
+                      strokeDasharray="88 100"
+                    />
+                  </svg>
+                  <div className="flex flex-col items-center justify-center -mt-2">
+                    <div className="text-[10px] font-semibold tracking-[0.28em] uppercase text-white/60 mb-1.5">
+                      TRUST SCORE
                     </div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-5xl md:text-6xl font-bold tracking-tight text-white leading-none">88</span>
+                      <span className="text-lg text-white/50 leading-none">/100</span>
+                    </div>
+                    <div className="mt-2 text-sm text-white/40">~ Community Authority Score</div>
                   </div>
                 </div>
               </div>
 
-              {/* Right: copy */}
-              <div className="flex-1 text-left space-y-6 relative z-10">
-                <h4 className="text-5xl lg:text-6xl font-bold tracking-tighter leading-[0.92] text-white">
-                  Sustainable <span className="italic text-white/70 font-normal">Reputation</span>
+              {/* Right: Sustainable Reputation – left-aligned, clear spacing */}
+              <div className="flex-1 min-w-0 text-left space-y-6 relative z-10">
+                <h4 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[0.92] text-white">
+                  Sustainable <span className="font-serif italic font-normal text-white">Reputation</span>
                 </h4>
-                <p className="text-base md:text-lg text-white/55 leading-relaxed max-w-xl">
+                <p className="text-base md:text-lg text-white/90 leading-relaxed max-w-xl">
                   Our strategies will improve your reputation on Reddit and build a basis for long-term sustainable growth.
                 </p>
                 <Link
                   to="/build-authority"
-                  className="group inline-flex items-center gap-2 px-6 py-2.5 bg-white hover:bg-gray-100 text-black font-semibold text-sm transition-all shadow-[0_14px_38px_rgba(0,0,0,0.55)] rounded-full"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white hover:bg-gray-100 text-black font-semibold text-sm rounded-full transition-colors"
                 >
                   Build Authority
-                  <svg className="w-4 h-4 opacity-90 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 17L17 7M17 7H9M17 7V15" />
                   </svg>
                 </Link>
