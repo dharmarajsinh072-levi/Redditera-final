@@ -995,13 +995,13 @@ const Homepage = () => {
             </div>
           </div>
 
-          {/* Service 2: Sustainable Reputation – exact match to screenshot */}
+          {/* Service 2: Sustainable Reputation – exact match to image 2 */}
           <div className="relative py-24 lg:py-32 overflow-hidden isolate bg-[#1A1A1A]">
             <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 md:gap-20 lg:gap-28 px-4 md:px-8">
-              {/* Left: Trust Score gauge – centered in column, neon green arc */}
+              {/* Left: Trust Score – 88 centered inside green arch, TRUST SCORE above, label below */}
               <div className="flex-1 w-full max-w-[min(100%,400px)] md:max-w-[min(48%,400px)] flex items-center justify-center overflow-hidden shrink-0">
-                <div className="relative w-full max-w-[320px] mx-auto">
-                  <svg className="w-full aspect-[16/9]" viewBox="0 0 240 140" aria-hidden="true">
+                <div className="relative w-full max-w-[320px] mx-auto aspect-[16/9] flex items-center justify-center">
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 140" aria-hidden="true">
                     <defs>
                       <filter id="gGlow" x="-15%" y="-15%" width="130%" height="130%">
                         <feGaussianBlur stdDeviation="1.5" result="blur" />
@@ -1011,7 +1011,6 @@ const Homepage = () => {
                         </feMerge>
                       </filter>
                     </defs>
-                    {/* inactive arc – darker grey */}
                     <path
                       d="M30 110 A 90 90 0 0 1 210 110"
                       fill="none"
@@ -1019,7 +1018,6 @@ const Homepage = () => {
                       strokeWidth="20"
                       strokeLinecap="round"
                     />
-                    {/* active arc – neon green with slight glow */}
                     <path
                       d="M30 110 A 90 90 0 0 1 210 110"
                       fill="none"
@@ -1031,25 +1029,27 @@ const Homepage = () => {
                       strokeDasharray="88 100"
                     />
                   </svg>
-                  <div className="flex flex-col items-center justify-center -mt-2">
-                    <div className="text-[10px] font-semibold tracking-[0.28em] uppercase text-white/60 mb-1.5">
+                  <div className="relative z-10 flex flex-col items-center justify-center text-center pt-2">
+                    <div className="text-[10px] font-semibold tracking-[0.28em] uppercase text-white/70 mb-1">
                       TRUST SCORE
                     </div>
-                    <div className="flex items-baseline gap-1">
+                    <div className="flex items-baseline justify-center gap-1">
                       <span className="text-5xl md:text-6xl font-bold tracking-tight text-white leading-none">88</span>
-                      <span className="text-lg text-white/50 leading-none">/100</span>
+                      <span className="text-lg text-white/55 leading-none">/100</span>
                     </div>
-                    <div className="mt-2 text-sm text-white/40">~ Community Authority Score</div>
+                    <div className="mt-1.5 text-sm text-white/45">~ Community Authority Score</div>
                   </div>
                 </div>
               </div>
 
-              {/* Right: Sustainable Reputation – left-aligned, clear spacing */}
+              {/* Right: Sustainable Reputation – Sustainable bold, Reputation italic on next line */}
               <div className="flex-1 min-w-0 text-left space-y-6 relative z-10">
-                <h4 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[0.92] text-white">
-                  Sustainable <span className="font-serif italic font-normal text-white">Reputation</span>
+                <h4 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.05] text-white">
+                  Sustainable
+                  <br />
+                  <span className="font-serif italic font-normal text-white">Reputation</span>
                 </h4>
-                <p className="text-base md:text-lg text-white/90 leading-relaxed max-w-xl">
+                <p className="text-base md:text-lg text-white/85 leading-relaxed max-w-xl">
                   Our strategies will improve your reputation on Reddit and build a basis for long-term sustainable growth.
                 </p>
                 <Link
