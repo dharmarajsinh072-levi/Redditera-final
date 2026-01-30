@@ -709,7 +709,7 @@ const Homepage = () => {
       </section>
 
       {/* About Section */}
-      <section id="about" className="relative z-10 bg-[var(--bg)] py-[5.5rem]">
+      <section id="about" className="relative z-10 bg-black py-[5.5rem]">
         <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/65 to-black/90" />
           <div className="absolute left-1/2 top-[35%] -translate-x-1/2 -translate-y-1/2 w-[980px] h-[640px] glow-focal opacity-25" />
@@ -995,8 +995,8 @@ const Homepage = () => {
             </div>
           </div>
 
-          {/* Service 2: Sustainable Reputation – exact match to image 2 */}
-          <div className="relative py-24 lg:py-32 overflow-hidden isolate bg-[#1A1A1A]">
+          {/* Service 2: Sustainable Reputation – no grey box, consistent with site */}
+          <div className="relative py-24 lg:py-32 overflow-hidden isolate bg-black">
             <div className="relative max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-16 md:gap-20 lg:gap-28 px-4 md:px-8">
               {/* Left: Trust Score – 88 centered inside green arch, TRUST SCORE above, label below */}
               <div className="flex-1 w-full max-w-[min(100%,400px)] md:max-w-[min(48%,400px)] flex items-center justify-center overflow-hidden shrink-0">
