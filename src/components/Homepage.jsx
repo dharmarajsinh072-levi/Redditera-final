@@ -187,20 +187,23 @@ const Homepage = () => {
   return (
     <div className="homepage bg-[var(--bg)] text-[var(--text)] min-h-screen">
       <div className="noise-overlay" />
-      {/* Hero Section - custom hero background image (home page only) */}
-      <section id="home" className="relative min-h-[85vh] flex items-center justify-center pt-24 pb-12 overflow-hidden">
+      {/* Hero Section - bg exactly like screenshot: dark radial gradient + subtle central texture, contained */}
+      <section id="home" className="relative min-h-[85vh] flex items-center justify-center pt-24 pb-12 overflow-hidden isolate">
         <div
           ref={heroBgRef}
-          className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-black"
+          className="absolute inset-0 z-0"
           style={{
-            backgroundImage: "url('/images/hero-bg.png')",
-            backgroundPosition: '55% 28%',
-            backgroundSize: 'cover',
-            filter: 'brightness(0.75) contrast(1.05) saturate(0.95)',
+            background: 'radial-gradient(ellipse 85% 90% at 50% 50%, #1a1a1a 0%, #0f0f0f 45%, #080808 75%, #050505 100%)',
           }}
           aria-hidden="true"
         />
-        <div className="absolute inset-0 z-[1] bg-black/35 pointer-events-none" aria-hidden="true" />
+        <div
+          className="absolute inset-0 z-[1] opacity-[0.04] pointer-events-none"
+          style={{
+            backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 3px)',
+          }}
+          aria-hidden="true"
+        />
         <div className="relative z-[2] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center text-center">
             {/* Social proof: avatars + stars + "70+ happy clients" */}
