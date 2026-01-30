@@ -21,10 +21,6 @@
   transform: translate3d(0, 0, 0);
 }
 
-.animate-scroll:hover {
-  animation-play-state: paused;
-}
-
 .animate-scroll-slow:hover {
   animation-play-state: paused;
 }

@@ -1,9 +1,13 @@
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Legend } from 'recharts'
 import '../styles/Homepage.css'
 
 const Homepage = () => {
+  const trustedPartnersScrollRef = useRef(null)
+  const heroBgRef = useRef(null)
+  const heroHeadlineRef = useRef(null)
+  const heroSubtextRef = useRef(null)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -129,37 +133,77 @@ const Homepage = () => {
 
   const barColors = Array.from({ length: 15 }, () => '#0EA5E9')
 
+  // #region agent log
+  useEffect(() => {
+    const send = (message, data, hypothesisId) => {
+      fetch('http://127.0.0.1:7242/ingest/c79d7835-0e41-4f4a-b19d-6ab64b081baa', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'Homepage.jsx', message, data: { ...data, pathname: window.location.pathname, origin: window.location.origin }, timestamp: Date.now(), sessionId: 'debug-session', hypothesisId }) }).catch(() => {})
+    }
+    send('Homepage mounted', { marker: 'ede-hero-bg-png', origin: window.location.origin, pathname: window.location.pathname }, 'H1-H5')
+    const tid = setTimeout(() => {
+      const bg = heroBgRef.current
+      if (bg) {
+        const s = window.getComputedStyle(bg)
+        send('hero bg at runtime', { backgroundImage: s.backgroundImage, filter: s.filter }, 'H2-H3')
+      }
+      const h2 = document.querySelector('section h2')
+      send('Our Process check', { firstH2Text: h2?.innerText?.slice(0, 60) || 'not found' }, 'H4')
+      const ourProcessSection = document.querySelector('[data-section="our-process-v2"]')
+      const opP = ourProcessSection?.querySelector('p')
+      send('Our Process section DOM', {
+        sectionFound: !!ourProcessSection,
+        paragraphColor: opP ? window.getComputedStyle(opP).color : 'n/a',
+        paragraphText: opP?.innerText?.slice(0, 40) || 'n/a',
+      }, 'H1-H5')
+    }, 150)
+    return () => clearTimeout(tid)
+  }, [])
+  useEffect(() => {
+    const log = (message, data, hypothesisId) => {
+      fetch('http://127.0.0.1:7242/ingest/c79d7835-0e41-4f4a-b19d-6ab64b081baa', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'Homepage.jsx:hero', message, data: { ...data, pathname: window.location.pathname, origin: window.location.origin }, timestamp: Date.now(), sessionId: 'debug-session', hypothesisId }) }).catch(() => {})
+    }
+    const bgEl = heroBgRef.current
+    const h1El = heroHeadlineRef.current
+    const pEl = heroSubtextRef.current
+    if (bgEl) {
+      const s = window.getComputedStyle(bgEl)
+      log('hero bg computed', { backgroundImage: s.backgroundImage, backgroundPosition: s.backgroundPosition, backgroundSize: s.backgroundSize }, 'H1-H2')
+    }
+    if (h1El) {
+      const s = window.getComputedStyle(h1El)
+      log('hero headline computed', { fontSize: s.fontSize, color: s.color, fontFamily: s.fontFamily }, 'H3')
+    }
+    if (pEl) {
+      const s = window.getComputedStyle(pEl)
+      log('hero subtext computed', { fontSize: s.fontSize, color: s.color }, 'H3')
+    }
+    log('hero mount', { pathname: window.location.pathname }, 'H5')
+    const img = new Image()
+    img.onload = () => { log('hero bg image load', { status: 'ok', src: img.src }, 'H1') }
+    img.onerror = () => { log('hero bg image load', { status: 'error', src: img.src }, 'H1') }
+    img.src = `${window.location.origin}/images/hero-bg.png`
+  }, [])
+  // #endregion
+
   return (
     <div className="homepage bg-[var(--bg)] text-[var(--text)] min-h-screen">
       <div className="noise-overlay" />
-      {/* Hero Section */}
-      <section id="home" className="relative min-h-[85vh] flex items-center justify-center pt-24 pb-12 overflow-hidden bg-[var(--bg)]">
-        {/* Screenshot hero background image */}
+      {/* Hero Section - custom hero background image (home page only) */}
+      <section id="home" className="relative min-h-[85vh] flex items-center justify-center pt-24 pb-12 overflow-hidden">
         <div
-          className="absolute inset-0 -z-20 bg-center bg-cover scale-[1.06]"
-          style={{ backgroundImage: "url('/images/home-hero-bg.png')" }}
-          aria-hidden="true"
-        />
-        {/* Blur + soften the background image (closer to screenshot) */}
-        <div
-          className="absolute inset-0 -z-10 backdrop-blur-[2px]"
-          aria-hidden="true"
-        />
-        {/* Dark overlay + centered spotlight + vignette */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/75 via-black/70 to-black/90" aria-hidden="true" />
-        <div
-          className="absolute inset-0 -z-10 opacity-90"
+          ref={heroBgRef}
+          className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-black"
           style={{
-            background:
-              'radial-gradient(circle at 50% 42%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 22%, rgba(0,0,0,0) 62%)',
+            backgroundImage: "url('/images/hero-bg.png')",
+            backgroundPosition: '55% 28%',
+            backgroundSize: 'cover',
+            filter: 'brightness(1.6) contrast(1.2) saturate(1.1)',
           }}
           aria-hidden="true"
         />
-        <div className="absolute inset-0 -z-10 [background:radial-gradient(closest-side,rgba(0,0,0,0),rgba(0,0,0,0.85))] opacity-80" aria-hidden="true" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[950px] h-[950px] glow-focal -z-10 opacity-45" />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="relative z-[2] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center text-center">
-            <div className="flex items-center gap-6 mb-6">
+            {/* Social proof: avatars + stars + "70+ happy clients" */}
+            <div className="flex items-center gap-3 mb-8">
               <div className="flex -space-x-3">
                 {[
                   'p3mZac3vHFT3FNOc4xkI8i552KM.webp',
@@ -169,38 +213,40 @@ const Homepage = () => {
                   <img
                     key={img}
                     src={`/images/${img}`}
-                    alt={`Client ${i + 1}`}
-                    className="w-10 h-10 rounded-full border-2 border-black object-cover"
+                    alt=""
+                    className="w-9 h-9 rounded-full border-2 border-black object-cover"
                     onError={(e) => {
                       e.target.style.display = 'none';
                     }}
                   />
                 ))}
               </div>
-              <p className="text-sm text-gray-300 font-medium">70+ happy clients</p>
+              <span className="text-amber-400 text-sm tracking-wide" aria-hidden="true">★★★★★</span>
+              <p className="text-sm text-white font-medium">70+ happy clients</p>
             </div>
 
-            {/* Main Title */}
-            <h1 className="text-5xl md:text-7xl font-serif font-light text-white mb-6 tracking-tight leading-tight">
-              Reddit marketing strategies<br />
-              <em className="text-gray-300">refined for measurable impact</em>
+            {/* Main headline: line1 bold white, line2 italic serif with slight indent */}
+            <h1 ref={heroHeadlineRef} className="text-5xl sm:text-6xl md:text-7xl font-bold text-white mb-6 tracking-tight leading-[1.1]">
+              Reddit marketing strategies
+              <br />
+              <span className="block text-white font-serif italic font-normal pl-[0.15em] md:pl-[0.2em] text-5xl sm:text-6xl md:text-7xl">
+                refined for measurable impact
+              </span>
             </h1>
 
-            {/* Subtitle */}
-            <p className="font-elegant text-lg md:text-xl text-gray-300 max-w-3xl mb-6 leading-relaxed">
-              Turn Reddit’s passionate communities into your brand’s loyal advocates. Build trust and drive sustainable growth.
+            {/* Descriptive paragraph - light grey, centered */}
+            <p ref={heroSubtextRef} className="text-base sm:text-lg text-gray-400 max-w-2xl mb-8 leading-relaxed">
+              Turn Reddit's passionate communities into your brand's loyal advocates. Build trust and drive sustainable growth.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col items-center gap-6 mb-6">
-              <a 
-                href="#contact" 
-                className="group relative flex items-center gap-2 px-8 py-3.5 bg-white text-black font-semibold text-lg font-mono hover:bg-gray-100 transition-all duration-300 rounded-full"
+            {/* CTA: white pill, black text, Get Started + arrow */}
+            <div className="flex flex-col items-center">
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-black font-semibold text-base rounded-full hover:bg-gray-100 transition-colors shadow-lg"
               >
                 Get Started
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" />
-                </svg>
+                <span aria-hidden="true">→</span>
               </a>
             </div>
 
@@ -581,7 +627,30 @@ const Homepage = () => {
             maskImage: 'linear-gradient(to right, transparent, black 20%, black 80%, transparent)',
             WebkitMaskImage: 'linear-gradient(to right, transparent, black 20%, black 80%, transparent)'
           }}>
-            <div className="flex animate-scroll hover:[animation-play-state:paused] w-max">
+            {/* #region agent log */}
+            <div
+              ref={trustedPartnersScrollRef}
+              className="flex animate-scroll w-max"
+              onMouseEnter={() => {
+                const el = trustedPartnersScrollRef.current
+                if (!el) return
+                requestAnimationFrame(() => {
+                  const s = el && window.getComputedStyle(el)
+                  const playState = s ? s.animationPlayState : 'N/A'
+                  fetch('http://127.0.0.1:7242/ingest/c79d7835-0e41-4f4a-b19d-6ab64b081baa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Homepage.jsx:TrustedPartners',message:'hover enter',data:{animationPlayState:playState,className:el.className},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1-H5'})}).catch(()=>{})
+                })
+              }}
+              onMouseLeave={() => {
+                const el = trustedPartnersScrollRef.current
+                if (!el) return
+                requestAnimationFrame(() => {
+                  const s = el && window.getComputedStyle(el)
+                  const playState = s ? s.animationPlayState : 'N/A'
+                  fetch('http://127.0.0.1:7242/ingest/c79d7835-0e41-4f4a-b19d-6ab64b081baa',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Homepage.jsx:TrustedPartners',message:'hover leave',data:{animationPlayState:playState,className:el.className},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1-H5'})}).catch(()=>{})
+                })
+              }}
+            >
+            {/* #endregion */}
               {[
                 { name: 'Blade', file: 'blade-logo-whitee.webp' },
                 { name: 'Bonkbot', file: 'bonkbot-logo-whitee.webp' },
@@ -730,23 +799,28 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Our Process Section */}
-      <section className="w-full max-w-7xl mx-auto px-4 py-[4.5rem] relative z-10 bg-black">
-        <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-6xl font-serif font-semibold text-white mb-6">
-            Our Process
+      {/* Our Process Section - exact match to image 2 */}
+      <section data-section="our-process-v2" className="w-full bg-black py-20 md:py-28 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col items-center text-center">
+          <h2 className="flex items-center justify-center gap-3 mb-12 text-white">
+            <span className="shrink-0 w-8 h-8 md:w-9 md:h-9 text-white" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+                <path d="M8 6 C 16 6 18 10 14 12 C 10 14 8 18 16 18" />
+                <path d="M16 18 C 8 18 6 14 10 12 C 14 10 16 6 8 6" />
+              </svg>
+            </span>
+            <span className="font-bold tracking-wide text-4xl md:text-5xl lg:text-[3.25rem]">Our</span>
+            <span className="font-serif italic font-normal text-3xl md:text-4xl lg:text-5xl text-white/95">Process</span>
           </h2>
-          <p className="font-elegant text-lg text-gray-300 leading-relaxed mb-6">
+          <p className="text-[#c4c4c4] text-base md:text-lg max-w-[65%] min-w-[280px] mx-auto leading-[1.7] mb-14 text-center">
             We will always start with the initial discussion over chat/call, to understand your needs and propose what makes the most sense in your specific case. Our goal is to prove you the power of non-traditional channels.
           </p>
-          <a 
-            href="#contact" 
-            className="group px-6 py-2 bg-white text-black font-mono text-sm hover:bg-gray-100 transition-all rounded-full inline-flex items-center gap-2"
+          <a
+            href="#contact"
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-white text-black font-bold text-base rounded-full hover:bg-gray-100 transition-colors shadow-[0_10px_40px_rgba(0,0,0,0.45)]"
           >
             Get Started
-            <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" />
-            </svg>
+            <span aria-hidden="true">→</span>
           </a>
         </div>
       </section>
