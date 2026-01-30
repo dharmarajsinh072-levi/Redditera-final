@@ -196,10 +196,11 @@ const Homepage = () => {
             backgroundImage: "url('/images/hero-bg.png')",
             backgroundPosition: '55% 28%',
             backgroundSize: 'cover',
-            filter: 'brightness(1.6) contrast(1.2) saturate(1.1)',
+            filter: 'brightness(0.75) contrast(1.05) saturate(0.95)',
           }}
           aria-hidden="true"
         />
+        <div className="absolute inset-0 z-[1] bg-black/35 pointer-events-none" aria-hidden="true" />
         <div className="relative z-[2] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex flex-col items-center text-center">
             {/* Social proof: avatars + stars + "70+ happy clients" */}
